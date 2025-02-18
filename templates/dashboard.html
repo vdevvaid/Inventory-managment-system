@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h2>Welcome, {{ current_user.username }}</h2>
+        </div>
+        <div class="col text-end">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                Add New Item
+            </button>
+        </div>
+    </div>
+
+    <!-- Search and Sort -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search items...">
+        </div>
+        <div class="col-md-6">
+            <select id="sortSelect" class="form-select">
+                <option value="name">Sort by Name</option>
+                <option value="quantity">Sort by Quantity</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Inventory Items List -->
+    <div class="row">
+        {% for item in items %}
+        <div class="col-md-6 mb-3">
+            <div class="inventory-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4>{{ item.name }}</h4>
+                    <div>
+                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ item.id }}">
+                            Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteItemModal{{ item.id }}">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Description: {{ item.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Add Item Modal -->
+    <div class="modal fade" id="addItemModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ url_for('add_item') }}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Item Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modals -->
+    {% for item in items %}
+    <div class="modal fade" id="editItemModal{{ item.id }}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ url_for('edit_item', item_id=item.id) }}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name{{ item.id }}" class="form-label">Item Name</label>
+                            <input type="text" class="form-control" id="name{{ item.id }}" name="name" value="{{ item.name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity{{ item.id }}" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity{{ item.id }}" name="quantity" value="{{ item.quantity }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description{{ item.id }}" class="form-label">Description</label>
+                            <textarea class="form-control" id="description{{ item.id }}" name="description" rows="3">{{ item.description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-warning">Update Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Item Modals -->
+    <div class="modal fade" id="deleteItemModal{{ item.id }}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong>{{ item.name }}</strong>?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{{ url_for('delete_item', item_id=item.id) }}" class="btn btn-danger">Delete Item</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 

@@ -1,0 +1,17 @@
+<header class="custom-header">
+    <div class="header-content">
+        <div class="company-info">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Company Logo" class="company-logo">
+            <h1 class="company-name">YourCompany Inventory</h1>
+        </div>
+        {% if current_user.is_authenticated %}
+        <div class="user-info">
+            <span class="user-greeting">Welcome back, {{ current_user.username }}</span>
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">3</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</header> 

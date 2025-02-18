@@ -1,0 +1,61 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #e74c3c;
+    --accent-color: #3498db;
+    --background-light: #ecf0f1;
+}
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.inventory-item {
+    border: none;
+    background: var(--background-light);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.inventory-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--accent-color);
+    border-radius: 8px 0 0 8px;
+}
+
+.btn-custom-primary {
+    background: var(--primary-color);
+    border: none;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-custom-primary:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.modal-dialog {
+    max-width: 500px;
+}
+
+.btn-warning {
+    margin-right: 5px;
+} 
